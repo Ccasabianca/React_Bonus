@@ -1,0 +1,20 @@
+.movie-card {
+  border-radius: 5px;
+}
+
+.movie-poster {
+  height: 22rem;
+  object-fit:cover;
+}
+
+.date-sortie {
+  color: grey;
+}
+
+.note-comment {
+font-weight: bold;
+}
+
+.btn-comment {
+  float: right;
+}
