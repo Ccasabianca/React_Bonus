@@ -10,9 +10,19 @@ import "./App.css";
 import CommentList from "./components/CommentList";
 
 const schema = yup.object({
-  comment: yup.string().required("Le commentaire est obligatoire").max(500, "Max 500 caractères"),
-  note: yup.number().required("Champ requis").min(1).max(5).typeError("La note doit être un nombre entre 1 et 5"),
-  acceptConditions: yup.bool().oneOf([true], "Vous devez accepter les conditions générales"),
+  comment: yup
+    .string()
+    .required("Le commentaire est obligatoire")
+    .max(500, "Max 500 caractères"),
+  note: yup
+    .number()
+    .required("Champ requis")
+    .min(1)
+    .max(5)
+    .typeError("La note doit être un nombre entre 1 et 5"),
+  acceptConditions: yup
+    .bool()
+    .oneOf([true], "Vous devez accepter les conditions générales"),
 });
 
 function App() {
@@ -21,12 +31,19 @@ function App() {
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data) => {
-    dispatch(addComment({ id: Date.now(), comment: data.comment, note: data.note }));
+    dispatch(
+      addComment({ id: Date.now(), comment: data.comment, note: data.note })
+    );
     reset();
   };
 
@@ -47,8 +64,14 @@ function App() {
     fetchMovie();
   }, []);
 
-  if (loading) return <Spinner animation="border" className="d-block mx-auto mt-4" />;
-  if (error) return <Alert variant="danger" className="mt-4">{error}</Alert>;
+  if (loading)
+    return <Spinner animation="border" className="d-block mx-auto mt-4" />;
+  if (error)
+    return (
+      <Alert variant="danger" className="mt-4">
+        {error}
+      </Alert>
+    );
 
   return (
     <Container className="mt-4">
@@ -56,12 +79,23 @@ function App() {
         <Col xs={12} md={4}>
           {movie && (
             <Card className="movie-card mb-4">
-              <Card.Img variant="top" className="movie-poster" src={movie.poster_path} alt={movie.original_title} />
+              <Card.Img
+                variant="top"
+                className="movie-poster"
+                src={movie.poster_path}
+                alt={movie.original_title}
+              />
               <Card.Body>
                 <Card.Title>{movie.original_title}</Card.Title>
-                <Card.Text>Sorti le : {new Date(movie.release_date).toLocaleDateString("fr-FR")}</Card.Text>
+                <Card.Text className="date-sortie">
+                  Sorti le :{" "}
+                  {new Date(movie.release_date).toLocaleDateString("fr-FR")}
+                </Card.Text>
                 <Card.Text>{movie.overview}</Card.Text>
-                <Card.Text>Note moyenne : {movie.vote_average} / 10 ({movie.vote_count} votes)</Card.Text>
+                <Card.Text>
+                  Note moyenne : {movie.vote_average} ({movie.vote_count}{" "}
+                  votes)
+                </Card.Text>
               </Card.Body>
             </Card>
           )}
@@ -71,8 +105,16 @@ function App() {
 
             <Form.Group controlId="comment" className="mb-3">
               <Form.Label>Commentaire</Form.Label>
-              <Form.Control as="textarea" rows={3} {...register("comment")} placeholder="Entrez votre commentaire ici" isInvalid={!!errors.comment} />
-              <Form.Control.Feedback type="invalid">{errors.comment?.message}</Form.Control.Feedback>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                {...register("comment")}
+                placeholder="Entrez votre commentaire ici"
+                isInvalid={!!errors.comment}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.comment?.message}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group controlId="note" className="mb-3">
@@ -85,15 +127,26 @@ function App() {
                 <option value="4">4</option>
                 <option value="5">5</option>
               </Form.Select>
-              <Form.Control.Feedback type="invalid">{errors.note?.message}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {errors.note?.message}
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group controlId="acceptConditions" className="mb-3">
-              <Form.Check type="checkbox" label="J'accepte les conditions" {...register("acceptConditions")} isInvalid={!!errors.acceptConditions} />
-              <Form.Control.Feedback type="invalid">{errors.acceptConditions?.message}</Form.Control.Feedback>
+              <Form.Check
+                type="checkbox"
+                label="J'accepte les conditions générales"
+                {...register("acceptConditions")}
+                isInvalid={!!errors.acceptConditions}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.acceptConditions?.message}
+              </Form.Control.Feedback>
             </Form.Group>
 
-            <Button variant="primary" type="submit">Ajouter</Button>
+            <Button variant="primary" type="submit">
+              Ajouter
+            </Button>
           </Form>
 
           <CommentList />
