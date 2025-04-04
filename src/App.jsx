@@ -1,15 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Spinner,
-  Button,
-  Form,
-  Alert,
-} from "react-bootstrap";
+import { Container, Row, Col, Card, Spinner, Button, Form, Alert} from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { addComment } from "./redux/commentSlice";
 import * as yup from "yup";
@@ -47,6 +38,9 @@ function App() {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      acceptConditions: false,
+    },
   });
 
   const onSubmit = (data) => {
