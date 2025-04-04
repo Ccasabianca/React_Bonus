@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Container, Row, Col, Card, Spinner, Button, Form, Alert } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Spinner,
+  Button,
+  Form,
+  Alert,
+} from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { addComment } from "./redux/commentSlice";
 import * as yup from "yup";
@@ -76,7 +85,7 @@ function App() {
   return (
     <Container className="mt-4">
       <Row className="justify-content-center">
-        <Col xs={12} md={4}>
+        <Col xs={12} md={6}>
           {movie && (
             <Card className="movie-card mb-4">
               <Card.Img
@@ -93,8 +102,7 @@ function App() {
                 </Card.Text>
                 <Card.Text>{movie.overview}</Card.Text>
                 <Card.Text>
-                  Note moyenne : {movie.vote_average} ({movie.vote_count}{" "}
-                  votes)
+                  Note moyenne : {movie.vote_average} ({movie.vote_count} votes)
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -121,11 +129,11 @@ function App() {
               <Form.Label>Note</Form.Label>
               <Form.Select {...register("note")} isInvalid={!!errors.note}>
                 <option value="">Sélectionnez une note</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                ))}
               </Form.Select>
               <Form.Control.Feedback type="invalid">
                 {errors.note?.message}
